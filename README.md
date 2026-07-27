@@ -5,17 +5,64 @@
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/)
 [![GitHub stars](https://img.shields.io/github/stars/AlanHYL/alan-dev-team?style=social)](https://github.com/AlanHYL/alan-dev-team)
 
-**全自动多 Agent 编码团队** — 一个命令启动 10 人虚拟开发团队，从需求到交付全自动。
+**全自动多 Agent 编码团队** — AI 驱动的智能软件开发团队。一个命令启动 10 个 AI Agent（产品经理、架构师、开发、测试、安全），自动完成需求分析→架构设计→编码→测试→审查→部署全流程，真正零人工干预。
 
 🇨🇳 [中文](./README.md) | 🌍 [English](./README.en.md)
 
-```
+```bash
 alan init my-project && alan start ./my-project
+```
+
+---
+
+## 系统要求
+
+- **Python 3.12+**（必需）
+- **Git**（必需）
+- **Node.js**（部分项目模板需要）
+- 支持 Windows / macOS / Linux
+
+## 安装
+
+如果你是 **首次使用**，执行以下命令激活 `alan` 命令：
+
+```bash
+# Git Bash (Linux/macOS 终端)
+source ~/.bashrc
+
+# PowerShell
+function alan { python "$env:USERPROFILE\.zcode\alan-dev-team\cli\alan.py" @args }
+```
+
+验证是否安装成功：
+
+```bash
+alan doctor
+```
+看到 `✅ 系统健康` 即表示就绪。
+
+## 快速开始
+
+```bash
+# 创建项目脚手架
+alan init my-blog --type web-flask
+
+# 启动全自动开发（10个Agent并行工作）
+alan start ./my-blog
+
+# 查看进度
+alan status ./my-blog
+
+# 查看日志
+alan log --tail
+
+# 项目评分（反馈闭环，系统会从中学习）
+alan feedback ./my-blog
 ```
 
 ## 架构
 
-10 个 Agent 角色并行协作，Observe-Think-Act 事件驱动循环：
+10 个 AI Agent 角色并行协作，Observe-Think-Act 事件驱动循环：
 
 | 角色 | 职责 |
 |------|------|
@@ -25,7 +72,7 @@ alan init my-project && alan start ./my-project
 | Dev-Frontend | UI 组件、页面、交互逻辑 |
 | Breaker | 敌对测试——攻破代码验证质量 |
 | QA | 测试计划、全量回归、覆盖率 |
-| Reviewer | 架构合规 + 代码质量 + 业务一致审查 |
+| Reviewer | 架构合规 + 代码质量 + 业务一致（三重审查） |
 | Integrator | 合并 worktree、解决冲突、每步验证 |
 | Security | 安全审计、漏洞扫描 |
 | DevOps | 构建验证、环境配置、部署 |
@@ -34,35 +81,13 @@ alan init my-project && alan start ./my-project
 
 - **并行开发** — 每个 Agent 在隔离的 git worktree 中工作，互不干扰
 - **文件所有权矩阵** — 每个 Agent 只能修改分配的文件，从源头防冲突
-- **三重审查门禁** — 架构合规 + 代码质量 + 业务一致
+- **三重审查门禁** — 架构合规 + 代码质量 + 业务一致，任何一项不通过不合并
 - **自动修复循环** — 发现问题 → 自动修复 → 再验证（最多 3 次）
 - **跨项目记忆** — 每个项目的经验教训自动积累，下次项目自动优化
 - **消息池通信** — Agent 通过消息池异步通信，Observe-Think-Act 事件驱动
 - **Git 安全网** — 测试失败自动回滚，绝不留下破损代码
 
-## 快速开始
-
-```bash
-# 安装（已安装则跳过）
-source ~/.bashrc
-
-# 创建项目脚手架
-alan init my-blog --type web-flask
-
-# 启动全自动开发
-alan start ./my-blog
-
-# 查看进度
-alan status ./my-blog
-
-# 查看日志
-alan log --tail
-
-# 项目评分（反馈闭环）
-alan feedback ./my-blog
-```
-
-### 项目类型
+## 项目类型
 
 | 类型 | 技术栈 | 命令 |
 |------|--------|------|
@@ -72,7 +97,7 @@ alan feedback ./my-blog
 | CLI 工具 | Python | `alan init app --type cli` |
 | **SaaS 多租户** | **FastAPI + React + PostgreSQL + Docker** | `alan init app --type saas` |
 
-## 系统命令
+## 所有命令
 
 ```bash
 alan init <name>       创建项目脚手架
@@ -81,7 +106,7 @@ alan status [path]     查看进度仪表盘
 alan log [--tail]      查看日志
 alan preview <path>    沙箱模式预览变更
 alan team              查看团队阵容
-alan tutorial          新手引导
+alan tutorial          新手引导（3步上手）
 alan doctor            系统健康检查 + 自愈
 alan feedback <path>   给项目评分反馈
 ```
@@ -95,7 +120,7 @@ AlanDevTeam 作为 zcode Skill 已预装，支持：
 
 ## 架构设计
 
-本项目参考了以下业界领先的多 Agent 系统：
+本项目深度参考了业界领先的多 Agent 系统：
 
 - [MetaGPT](https://github.com/geekan/MetaGPT) — SOP 驱动角色分工
 - [AgentGrid](https://github.com/ishanavasthi/agentgrid) — 并行 Worktree + 敌对测试
@@ -105,4 +130,4 @@ AlanDevTeam 作为 zcode Skill 已预装，支持：
 
 ## 许可证
 
-MIT
+MIT — 自由使用、修改、商用。
