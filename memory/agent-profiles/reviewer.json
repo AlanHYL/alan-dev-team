@@ -1,0 +1,10 @@
+{
+  "agent": "Reviewer",
+  "lessons": [
+    {
+      "lesson": "重点检查delete操作的事务保护+PUT接口的输入校验",
+      "from_project": "个人书单管理器",
+      "date": "2026-07-28T01:27:04.624181"
+    }
+  ]
+}

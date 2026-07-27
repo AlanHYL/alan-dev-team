@@ -1,0 +1,18 @@
+{
+  "project": "个人书单管理器",
+  "path": "C:\\Users\\Administrator\\Desktop\\alan-book-manager",
+  "date": "2026-07-28T01:27:04.621659",
+  "lessons_learned": [
+    "CSV注入防护必须在数据写入前做字段转义(sanitize_csv_field)",
+    "delete_book 的 commit() 也需要 try/except 事务保护",
+    "前端布局变更应通知 Reviewer 做设计偏离检查",
+    "Peer Review 必须检查三方面: 架构合规+代码质量+业务一致",
+    "Git安全网: 修改前stash, 修改后test, 失败则checkout回滚"
+  ],
+  "agent_improvements": {
+    "Dev-Backend": "所有写操作必须包含事务回滚,输入校验,CSV字段转义",
+    "Dev-Frontend": "修改前先读CONTEXT.md,不擅自改变布局设计",
+    "Reviewer": "重点检查delete操作的事务保护+PUT接口的输入校验",
+    "QA": "测试不仅要测新增,还必须全量回归验证已有功能"
+  }
+}
