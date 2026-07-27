@@ -5,70 +5,102 @@ description: 全自动化多Agent编码团队——Orchestrator。并行派发10
 
 # AlanDevTeam · AI 开发团队
 
-你收到用户的需求后，必须立即开始开发，**不要向用户确认"想做什么"，直接做**。
+你收到用户的需求后，必须立即开始执行以下步骤。**不要停下来问用户，直接做。**
 
-## 核心流程
+## 第 0 步：清理并预检
 
-### 第 0 步：清理旧消息池
 ```bash
 rm -f ~/.zcode/alan-dev-team/message-pool/*.json
+alan doctor
 ```
 
-### 第 1 步：创建项目脚手架
-根据用户需求选择类型，用 `alan init` 创建：
+## 第 1 步：创建项目 + 定义文件所有权矩阵
+
+根据用户需求创建脚手架，然后 Architect 定义每个 Agent 能改什么文件：
 
 ```bash
 alan init <项目名> --type <类型> --output ~/Desktop
 ```
 
-| 用户说 | 类型 |
-|--------|------|
-| 博客/网站/Web | web-flask |
-| 前端/React | web-react |
-| API/后端 | api |
-| 命令行工具 | cli |
-| SaaS/企业多租户 | saas |
+建好后，立即用 **Agent 工具派发 Architect**（加载 `roles/architect-agent.md`），让其产出：
+- `artifacts/specs/api-spec.yaml` — API规范
+- `artifacts/specs/db-schema.sql` — 数据库设计  
+- **`OWNERSHIP.json`** — 文件所有权矩阵（这是关键：明确每个Agent能改什么文件）
 
-### 第 2 步：组建团队，并行派发 Agent
+**与 Architect 同时，派发 PM**（加载 `roles/pm-agent.md`），产出任务卡片。
 
-进入项目目录，并行派发 PM 和 Architect：
+**与 Architect 同时，派发 QA**（加载 `roles/qa-agent.md`），产出测试计划。
 
-**用 Agent 工具派发 PM**（和 Architect 同时启动）：
-加载 `roles/pm-agent.md`，投入产出 `artifacts/board/TASK-001.md`
+## 第 2 步：创建隔离 Worktree + 并行派发 Dev
 
-**用 Agent 工具派发 Architect**（和 PM 同时启动）：
-加载 `roles/architect-agent.md`，投入产出 `artifacts/specs/`
-
-### 第 3 步：根据架构结果，并行派发 Dev
-
-Architect 完成后，并行派发：
-
-**用 Agent 工具派发 Dev-Backend**：加载 `roles/dev-backend.md`
-**用 Agent 工具派发 Dev-Frontend**：加载 `roles/dev-frontend.md`
-**用 Agent 工具派发 Breaker**：加载 `roles/breaker-agent.md`（写敌对测试）
-**用 Agent 工具派发 QA**：加载 `roles/qa-agent.md`
-
-### 第 4 步：Review + Integrate + Security
-
-开发完成后：
-
-**用 Agent 工具派发 Reviewer**：加载 `roles/reviewer-agent.md`
-**用 Agent 工具派发 Integrator**：加载 `roles/integrator-agent.md`
-**用 Agent 工具派发 Security**：加载 `roles/security-agent.md`
-**用 Agent 工具派发 DevOps**：加载 `roles/devops-agent.md`
-
-### 第 5 步：交付
+Architect 完成后，运行：
 
 ```bash
-alan log --tail              # 查看最终日志
-alan status <项目路径>        # 查看状态
-alan feedback <项目路径>      # 请用户评分
+python ~/.zcode/alan-dev-team/scripts/worktree-manager.py init --project <项目路径>
+python ~/.zcode/alan-dev-team/scripts/worktree-manager.py assign --agent Dev-Backend --files "app.py,models.py"
+python ~/.zcode/alan-dev-team/scripts/worktree-manager.py assign --agent Dev-Frontend --files "static/**,templates/**"
+python ~/.zcode/alan-dev-team/scripts/worktree-manager.py assign --agent Breaker --files "tests/test_adversarial.py"
+python ~/.zcode/alan-dev-team/scripts/worktree-manager.py create-worktrees
 ```
+
+然后在各隔离 worktree 中并行派发 Agent：
+
+**用 Agent 工具派发 Dev-Backend**（在 `../<项目名>-dev-backend/` 中工作）：
+加载 `roles/dev-backend.md`，只允许修改 `app.py, models.py`
+
+**用 Agent 工具派发 Dev-Frontend**（在 `../<项目名>-dev-frontend/` 中工作）：
+加载 `roles/dev-frontend.md`，只允许修改 `static/**, templates/**`
+
+**用 Agent 工具派发 Breaker**（在 `../<项目名>-breaker/` 中工作）：
+加载 `roles/breaker-agent.md`，写敌对测试试图攻破代码
+
+**用 Agent 工具派发 QA**：
+加载 `roles/qa-agent.md`，执行测试
+
+## 第 3 步：Integrator 合并 Worktree
+
+并行开发完成后：
+
+```bash
+python ~/.zcode/alan-dev-team/scripts/worktree-manager.py merge
+```
+
+然后用 **Agent 工具派发 Integrator**（加载 `roles/integrator-agent.md`）：
+- 检查每个 Agent 的文件所有权合规
+- 按依赖顺序合并（后端→前端）
+- 每步运行测试验证
+- 产生集成报告
+
+## 第 4 步：Review Gate + Security + DevOps
+
+**用 Agent 工具派发 Reviewer**（加载 `roles/reviewer-agent.md`）：
+- 三重审查：架构合规 + 代码质量 + 业务一致
+- 输出审查报告
+
+**用 Agent 工具派发 Security**（加载 `roles/security-agent.md`）
+
+**用 Agent 工具派发 DevOps**（加载 `roles/devops-agent.md`）
+
+## 第 5 步：记录经验 + 交付
+
+```bash
+# 记录项目经验到长期记忆
+python ~/.zcode/alan-dev-team/scripts/lesson-learner.py \
+  --project <项目名> --dir <项目路径> \
+  --learn "<总结的经验教训>" \
+  --agent "Dev-Backend:<改进建议>" \
+  --agent "Dev-Frontend:<改进建议>"
+
+alan log --tail              # 查看日志
+alan status <项目路径>        # 查看最终状态
+```
+
+向用户交付最终项目路径和启动方式。
 
 ## 关键规则
 
-1. **不要停下来问用户** — 用户已经给了需求，直接开发
-2. **并行 > 串行** — 多个 Agent 同时启动，不要等一个做完再做下一个
-3. **Agent 工具用于派发角色**，每个角色加载对应的 roles/*.md 文件
-4. `alan` 命令用于脚手架和状态查看，不用于运行 Agent
-5. 项目在 `~/Desktop/<项目名>/` 下
+1. **不要停下来问用户** — 直接做
+2. **Worktree 隔离** — 每个 Dev 在自己的 worktree 中工作，互不干扰
+3. **所有权矩阵** — Agent 只能修改分配给它的文件
+4. **Integrator 合并** — 按依赖顺序合并，每步测试验证
+5. **经验记录** — 项目完成后必须记录经验教训
