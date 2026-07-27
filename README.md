@@ -24,21 +24,29 @@ alan init my-project && alan start ./my-project
 
 ## 安装
 
-如果你是 **首次使用**，执行以下命令激活 `alan` 命令：
+### 方式一：一行命令安装（推荐）
 
 ```bash
-# Git Bash (Linux/macOS 终端)
+bash <(curl -s https://raw.githubusercontent.com/AlanHYL/alan-dev-team/main/install.sh)
+```
+
+### 方式二：Git Clone 安装
+
+```bash
+git clone https://github.com/AlanHYL/alan-dev-team.git ~/.zcode/alan-dev-team
+bash ~/.zcode/alan-dev-team/install.sh
+```
+
+### 验证
+
+```bash
+# 重新打开终端
 source ~/.bashrc
 
-# PowerShell
-function alan { python "$env:USERPROFILE\.zcode\alan-dev-team\cli\alan.py" @args }
-```
-
-验证是否安装成功：
-
-```bash
+# 验证安装
 alan doctor
 ```
+
 看到 `✅ 系统健康` 即表示就绪。
 
 ## 快速开始

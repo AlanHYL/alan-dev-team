@@ -24,19 +24,26 @@ alan init my-project && alan start ./my-project
 
 ## Installation
 
-For **first-time users**, Activate the `alan` command:
+### Option 1: One-line install (recommended)
 
 ```bash
-# Git Bash (Linux/macOS terminal)
-source ~/.bashrc
-
-# PowerShell
-function alan { python "$env:USERPROFILE\.zcode\alan-dev-team\cli\alan.py" @args }
+bash <(curl -s https://raw.githubusercontent.com/AlanHYL/alan-dev-team/main/install.sh)
 ```
 
-Verify it works:
+### Option 2: Git Clone
 
 ```bash
+git clone https://github.com/AlanHYL/alan-dev-team.git ~/.zcode/alan-dev-team
+bash ~/.zcode/alan-dev-team/install.sh
+```
+
+### Verify
+
+```bash
+# Open a new terminal, or:
+source ~/.bashrc
+
+# Verify installation
 alan doctor
 ```
 
