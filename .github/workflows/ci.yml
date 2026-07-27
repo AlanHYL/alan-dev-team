@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Syntax Check
+        run: |
+          python -m compileall cli/alan.py scripts/*.py
+          echo "✅ Python 语法检查通过"
+
+      - name: CLI Smoke Test
+        run: |
+          python cli/alan.py team
+          python cli/alan.py --help
+          echo "✅ CLI 可用"
+
+      - name: Init Test (web-flask)
+        run: |
+          python cli/alan.py init test-flask --type web-flask --output /tmp
+          test -f /tmp/test-flask/app.py
+          echo "✅ web-flask 脚手架可用"
+
+      - name: Init Test (saas)
+        run: |
+          python cli/alan.py init test-saas --type saas --output /tmp
+          test -f /tmp/test-saas/docker-compose.yml
+          test -f /tmp/test-saas/backend/app/main.py
+          test -f /tmp/test-saas/frontend/src/App.tsx
+          echo "✅ saas 脚手架可用"
+
+      - name: Init Test (cli)
+        run: |
+          python cli/alan.py init test-cli --type cli --output /tmp
+          test -f /tmp/test-cli/main.py
+          echo "✅ cli 脚手架可用"
+
+      - name: Init Test (api)
+        run: |
+          python cli/alan.py init test-api --type api --output /tmp
+          test -f /tmp/test-api/main.py
+          echo "✅ api 脚手架可用"
+
+      - name: Doctor Check
+        run: |
+          python cli/alan.py doctor
+          echo "✅ 自检通过"
