@@ -1,8 +1,46 @@
 {
   "name": "alan-dev-team",
   "version": "1.0.0",
-  "description": "全自动化多Agent编码团队——Orchestrator + PM/架构师/Dev/QA/Reviewer 多角色并行协作",
-  "author": "Alan",
+  "description": "AlanDevTeam — 全自动多Agent编码团队。10个Agent角色并行协作，自动完成需求→设计→编码→测试→审查→交付全流程。",
+  "author": { "name": "AlanHYL" },
   "license": "MIT",
-  "skills": "."
+  "skills": ".",
+  "commands": {
+    "alan-init": {
+      "command": "python",
+      "args": ["${ZCODE_PLUGIN_ROOT}/cli/alan.py", "init"]
+    },
+    "alan-start": {
+      "command": "python",
+      "args": ["${ZCODE_PLUGIN_ROOT}/cli/alan.py", "start"]
+    },
+    "alan-status": {
+      "command": "python",
+      "args": ["${ZCODE_PLUGIN_ROOT}/cli/alan.py", "status"]
+    },
+    "alan-log": {
+      "command": "python",
+      "args": ["${ZCODE_PLUGIN_ROOT}/cli/alan.py", "log", "--tail"]
+    },
+    "alan-doctor": {
+      "command": "python",
+      "args": ["${ZCODE_PLUGIN_ROOT}/cli/alan.py", "doctor"]
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${ZCODE_PLUGIN_ROOT}/../hooks/alan-dev-message.sh\"",
+            "enabled": true,
+            "statusMessage": "[AlanDevTeam] 观察代码变更 → 写入消息池...",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
 }
