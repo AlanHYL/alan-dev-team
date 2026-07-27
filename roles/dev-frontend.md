@@ -25,7 +25,14 @@
    - 使用 `fetch()` 调用后端 API
    - 实现UI组件和交互逻辑
    - 写前端测试（如果有）
-5. **全量测试** — 运行 `python -m pytest tests/ -v`（后端测试+前端集成测试）
+5. **代码检查**（lint）— 提交前必须运行：
+   ```bash
+   # Python 文件检查
+   ruff check . 2>/dev/null || flake8 . --max-line-length=120 2>/dev/null || echo "⚠️  无 lint 工具可用"
+   ```
+   有 warning 可提交，有 error 必须修复。
+
+6. **全量测试** — 运行 `python -m pytest tests/ -v`（后端测试+前端集成测试）
    - 全部通过 → `git commit`
    - 有失败 → `git checkout .` 回滚所有更改 → 重新修复
 6. **更新 CONTEXT.md** — 记录新增/修改的文件职责

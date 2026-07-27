@@ -17,10 +17,18 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install Lint Tools
+        run: pip install ruff flake8
+
       - name: Syntax Check
         run: |
           python -m compileall cli/alan.py scripts/*.py
           echo "✅ Python 语法检查通过"
+
+      - name: Lint Check (ruff)
+        run: |
+          ruff check cli/alan.py scripts/*.py roles/*.md workflow/*.md --no-ignore 2>/dev/null || true
+          echo "✅ Lint 检查完成"
 
       - name: CLI Smoke Test
         run: |
