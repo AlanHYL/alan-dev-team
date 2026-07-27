@@ -1,6 +1,13 @@
 # AlanDevTeam 🤖👥
 
+[![CI](https://github.com/AlanHYL/alan-dev-team/actions/workflows/ci.yml/badge.svg)](https://github.com/AlanHYL/alan-dev-team/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/)
+[![GitHub stars](https://img.shields.io/github/stars/AlanHYL/alan-dev-team?style=social)](https://github.com/AlanHYL/alan-dev-team)
+
 **全自动多 Agent 编码团队** — 一个命令启动 10 人虚拟开发团队，从需求到交付全自动。
+
+🇨🇳 [中文](./README.md) | 🌍 [English](./README.en.md)
 
 ```
 alan init my-project && alan start ./my-project
